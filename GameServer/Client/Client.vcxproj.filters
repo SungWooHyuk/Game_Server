@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Main">
+      <UniqueIdentifier>{de739869-874b-4540-9747-a840de550cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protocol">
+      <UniqueIdentifier>{f8708bf6-5dc4-4e39-a755-904bb98f2de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{746b244a-1c65-4aa4-9052-81a3a5cc9861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SFML">
+      <UniqueIdentifier>{5d3e9505-c8f7-4b01-b841-bc17207903d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SFML\include">
+      <UniqueIdentifier>{fce2d2f7-dfaf-4679-a18f-4cb69582ad19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SFML\lib">
+      <UniqueIdentifier>{64df8f17-eb4c-47f4-84d9-67725adb6de5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Config.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\BlendMode.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\CircleShape.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Color.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\ConvexShape.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Drawable.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Export.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Font.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Glsl.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Glyph.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Image.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\PrimitiveType.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Rect.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\RectangleShape.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\RenderStates.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\RenderTarget.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\RenderTexture.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\RenderWindow.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Shader.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Shape.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Sprite.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Text.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Texture.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Transform.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Transformable.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\Vertex.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\VertexArray.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\VertexBuffer.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Graphics\View.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\Export.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\Ftp.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\Http.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\IpAddress.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\Packet.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\Socket.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\SocketHandle.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\SocketSelector.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\TcpListener.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\TcpSocket.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Network\UdpSocket.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Clock.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Err.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Export.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\FileInputStream.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\InputStream.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Lock.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\MemoryInputStream.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Mutex.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\NativeActivity.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\NonCopyable.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Sleep.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\String.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Thread.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\ThreadLocal.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\ThreadLocalPtr.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Time.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Utf.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Vector2.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\System\Vector3.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Clipboard.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Context.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\ContextSettings.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Cursor.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Event.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Export.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\GlResource.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Joystick.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Keyboard.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Mouse.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Sensor.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Touch.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\VideoMode.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\Window.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\WindowHandle.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\WindowStyle.hpp">
+      <Filter>SFML\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientMain.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ClientS\client_sample\include\SFML\Graphics\Glsl.inl">
+      <Filter>SFML\include</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\include\SFML\Graphics\Rect.inl">
+      <Filter>SFML\include</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\include\SFML\System\String.inl">
+      <Filter>SFML\include</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\include\SFML\System\Thread.inl">
+      <Filter>SFML\include</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\include\SFML\System\ThreadLocalPtr.inl">
+      <Filter>SFML\include</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\include\SFML\System\Utf.inl">
+      <Filter>SFML\include</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\include\SFML\System\Vector2.inl">
+      <Filter>SFML\include</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\include\SFML\System\Vector3.inl">
+      <Filter>SFML\include</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\lib\sfml-graphics-s-d.pdb">
+      <Filter>SFML\lib</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\lib\sfml-network-s-d.pdb">
+      <Filter>SFML\lib</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\lib\sfml-system-s-d.pdb">
+      <Filter>SFML\lib</Filter>
+    </None>
+    <None Include="..\ClientS\client_sample\lib\sfml-window-s-d.pdb">
+      <Filter>SFML\lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\ClientS\client_sample\lib\freetype.lib">
+      <Filter>SFML\lib</Filter>
+    </Library>
+    <Library Include="..\ClientS\client_sample\lib\sfml-graphics-s-d.lib">
+      <Filter>SFML\lib</Filter>
+    </Library>
+    <Library Include="..\ClientS\client_sample\lib\sfml-graphics-s.lib">
+      <Filter>SFML\lib</Filter>
+    </Library>
+    <Library Include="..\ClientS\client_sample\lib\sfml-network-s-d.lib">
+      <Filter>SFML\lib</Filter>
+    </Library>
+    <Library Include="..\ClientS\client_sample\lib\sfml-network-s.lib">
+      <Filter>SFML\lib</Filter>
+    </Library>
+    <Library Include="..\ClientS\client_sample\lib\sfml-system-s-d.lib">
+      <Filter>SFML\lib</Filter>
+    </Library>
+    <Library Include="..\ClientS\client_sample\lib\sfml-system-s.lib">
+      <Filter>SFML\lib</Filter>
+    </Library>
+    <Library Include="..\ClientS\client_sample\lib\sfml-window-s-d.lib">
+      <Filter>SFML\lib</Filter>
+    </Library>
+    <Library Include="..\ClientS\client_sample\lib\sfml-window-s.lib">
+      <Filter>SFML\lib</Filter>
+    </Library>
+  </ItemGroup>
+</Project>

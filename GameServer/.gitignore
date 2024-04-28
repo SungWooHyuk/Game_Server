@@ -1,0 +1,28 @@
+# Compiled Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic Libraries
+*.so
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Dependency files
+*.d
+
+# VS Code
+.vscode/
+
+# Visual Studio
+.vs/

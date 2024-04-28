@@ -1,0 +1,39 @@
+﻿  pch.cpp
+  Allocator.cpp
+  BufferReader.cpp
+  BufferWriter.cpp
+  ConsoleLog.cpp
+  CoreGlobal.cpp
+  CorePch.cpp
+  CoreTLS.cpp
+  DBBind.cpp
+  DBConnection.cpp
+  DBConnectionPool.cpp
+  DBModel.cpp
+  DBSynchronizer.cpp
+  DeadLockProfiler.cpp
+  FileUtils.cpp
+  GlobalQueue.cpp
+  IocpCore.cpp
+  IocpEvent.cpp
+  Job.cpp
+  JobQueue.cpp
+  JobTimer.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Listener.cpp
+  Lock.cpp
+  LockQueue.cpp
+  Memory.cpp
+  MemoryPool.cpp
+  NetAddress.cpp
+  RecvBuffer.cpp
+  RefCounting.cpp
+  SendBuffer.cpp
+  Service.cpp
+  Session.cpp
+  SocketUtils.cpp
+  ThreadManager.cpp
+  XMLParser.cpp
+  코드를 생성하고 있습니다...
+  ServerCore.vcxproj -> D:\GS_Term\G_S\Libraries\Libs\ServerCore\Debug\ServerCore.lib
