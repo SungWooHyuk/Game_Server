@@ -1,8 +1,11 @@
-﻿  pch.cpp
-  ClientMain.cpp
-D:\GS_Term\G_S\Client\ClientMain.cpp(63,13): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-D:\GS_Term\G_S\Client\ClientMain.cpp(67,9): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-D:\GS_Term\G_S\Client\ClientMain.cpp(271,43): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Client.vcxproj -> D:\GS_Term\G_S\Binary\Debug\Client.exe
+﻿  ClientMain.cpp
+D:\GS_Term\GameServer\Client\ClientMain.cpp(186,43): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  MapData.cpp
+D:\GS_Term\GameServer\Client\MapData.cpp(28,13): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\GS_Term\GameServer\Client\MapData.cpp(33,9): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\GS_Term\GameServer\Client\MapData.cpp(54,24): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\GS_Term\GameServer\Client\MapData.cpp(65,13): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  코드를 생성하고 있습니다...
+  Client.vcxproj -> D:\GS_Term\GameServer\Binary\Debug\Client.exe
   'pwsh.exe'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는
   배치 파일이 아닙니다.

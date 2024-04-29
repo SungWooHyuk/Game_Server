@@ -19,6 +19,9 @@
     <Filter Include="SFML\lib">
       <UniqueIdentifier>{64df8f17-eb4c-47f4-84d9-67725adb6de5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContents">
+      <UniqueIdentifier>{5a0b252b-a8e4-45e9-a5ae-01648ddd3b87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -264,6 +267,12 @@
     <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\WindowStyle.hpp">
       <Filter>SFML\include</Filter>
     </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MapData.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -271,6 +280,9 @@
     </ClCompile>
     <ClCompile Include="ClientMain.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="MapData.cpp">
+      <Filter>GameContents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

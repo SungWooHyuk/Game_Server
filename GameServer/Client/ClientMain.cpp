@@ -1,17 +1,15 @@
 #include "pch.h"
+#include "utils.h"
+#include "MapData.h"
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
 #include "protocol.h"
 
 sf::TcpSocket s_socket;
-
-constexpr auto SCREEN_WIDTH = 16;
-constexpr auto SCREEN_HEIGHT = 16;
-
-constexpr auto TILE_WIDTH = 65;
-constexpr auto WINDOW_WIDTH = SCREEN_WIDTH * TILE_WIDTH;   // size of window
-constexpr auto WINDOW_HEIGHT = SCREEN_WIDTH * TILE_WIDTH;
+sf::RenderWindow* g_window;
+sf::Font g_font;
 
 int g_left_x;
 int g_top_y;
@@ -19,93 +17,10 @@ int g_myid;
 
 vector<string> sc(10);
 
-sf::RenderWindow* g_window;
-sf::Font g_font;
-
-char wmap[W_WIDTH][W_HEIGHT];
-
-char townmap[20][20]
-{
-	'3','3','3','3','3','3','3','3','1','1','1','3','3','3','3','3','3','3','3','3',
-	'3','3','3','3','3','3','3','3','1','1','1','3','3','3','3','3','3','3','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1',
-	'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1',
-	'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','2','2','2','2','2','2','1','1','1','2','2','2','2','2','2','2','3','3',
-	'3','3','3','3','3','3','3','3','1','1','1','3','3','3','3','3','3','3','3','3',
-	'3','3','3','3','3','3','3','3','1','1','1','3','3','3','3','3','3','3','3','3'
-
-};
-
-enum MAP_TYPE
-{
-	e_PLAT,
-	e_OBSTACLE,
-	e_BTOWN,
-	e_GTOWN
-};
-
-void Init_mapdata()
-{
-	char data;
-	FILE* fp = fopen("mapdata.txt", "rb");
-
-	int cnt = 0;
-
-	while (fscanf(fp, "%c", &data) != EOF)
-	{
-		switch (data)
-		{
-		case '0':
-			wmap[cnt / 2000][cnt % 2000] = e_PLAT;
-			cnt++;
-			break;
-		case '3':
-			wmap[cnt / 2000][cnt % 2000] = e_OBSTACLE;
-			cnt++;
-			break;
-		}
-	}
-
-	for (int i = 0; i < 20; ++i)
-	{
-		for (int j = 0; j < 20; ++j)
-		{
-			char data = townmap[i][j];
-			switch (data)
-			{
-			case '0':
-				wmap[i + 1000][j + 1000] = e_PLAT;
-				break;
-			case '1':
-				wmap[i + 1000][j + 1000] = e_BTOWN;
-				break;
-			case '2':
-				wmap[i + 1000][j + 1000] = e_GTOWN;
-				break;
-			case '3':
-				wmap[i + 1000][j + 1000] = e_OBSTACLE;
-				break;
-			}
-		}
-	}
-}
-
 bool hpcheck = true;
 bool mpcheck = true;
 bool expcheck = true;
+
 class OBJECT {
 private:
 	bool m_showing;
@@ -681,22 +596,22 @@ void client_main()
 			int tile_x = i + g_left_x;
 			int tile_y = j + g_top_y;
 			if ((tile_x < 0) || (tile_y < 0)) continue;
-
-			if (wmap[tile_y][tile_x] == MAP_TYPE::e_PLAT) {
+			
+			if (MAPDATA->GetTile(tile_y,tile_x) == MAPDATA->MAP_TYPE::e_PLAT) {
 				plat_tile.a_move(TILE_WIDTH * i, TILE_WIDTH * j);
 				plat_tile.a_draw();
 			}
-			else if (wmap[tile_y][tile_x] == MAP_TYPE::e_OBSTACLE)
+			else if (MAPDATA->GetTile(tile_y, tile_x) == MAPDATA->MAP_TYPE::e_OBSTACLE)
 			{
 				obstacle_tile.a_move(TILE_WIDTH * i, TILE_WIDTH * j);
 				obstacle_tile.a_draw();
 			}
-			else if (wmap[tile_y][tile_x] == MAP_TYPE::e_BTOWN)
+			else if (MAPDATA->GetTile(tile_y, tile_x) == MAPDATA->MAP_TYPE::e_BTOWN)
 			{
 				Btown_tile.a_move(TILE_WIDTH * i, TILE_WIDTH * j);
 				Btown_tile.a_draw();
 			}
-			else if (wmap[tile_y][tile_x] == MAP_TYPE::e_GTOWN)
+			else if (MAPDATA->GetTile(tile_y, tile_x) == MAPDATA->MAP_TYPE::e_GTOWN)
 			{
 				Gtown_tile.a_move(TILE_WIDTH * i, TILE_WIDTH * j);
 				Gtown_tile.a_draw();
@@ -799,8 +714,8 @@ int main()
 		//exit(-1);
 	}
 
-
-	Init_mapdata();
+	MapData* mapData = MapData::GetInstance();
+	
 	client_initialize();
 	CS_LOGIN_PACKET p;
 	p.size = sizeof(p);
