@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "utils.h"
 #include "MapData.h"
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
+#include "SFSystem.h"
 
 #include "protocol.h"
 
@@ -11,15 +9,9 @@ sf::TcpSocket s_socket;
 sf::RenderWindow* g_window;
 sf::Font g_font;
 
-int g_left_x;
-int g_top_y;
-int g_myid;
-
-vector<string> sc(10);
-
-bool hpcheck = true;
-bool mpcheck = true;
-bool expcheck = true;
+//int g_left_x;
+//int g_top_y;
+//int g_myid;
 
 class OBJECT {
 private:
@@ -27,8 +19,8 @@ private:
 	sf::Sprite m_sprite;
 	sf::Sprite m_sprite_attack;
 
-	sf::Text m_name;
 	sf::Text m_information[10];
+	sf::Text m_name;
 	sf::Text m_level;
 	sf::Text m_exp;
 	sf::Text m_maxexp;
@@ -37,9 +29,8 @@ private:
 	sf::Text m_mp;
 	sf::Text m_maxhp;
 	sf::Text m_maxmp;
-	sf::RectangleShape systemBox;
+
 	sf::RectangleShape hpBox;
-	sf::RectangleShape monsterhpBox;
 	sf::RectangleShape mpBox;
 	sf::RectangleShape expBox;
 	sf::RectangleShape hpBoxInner;
@@ -50,7 +41,7 @@ private:
 	chrono::system_clock::time_point m_information_end_time[10];
 	chrono::system_clock::time_point m_attack_end_time;
 public:
-	int id;
+	//int id;
 	int m_x, m_y;
 	int _hp;
 	int _mp;
@@ -60,13 +51,8 @@ public:
 	int max_exp;
 	int _level;
 
-	int num = 0;
 	char name[NAME_SIZE];
-	char maxexp[10];
-	char exp[10];
-	bool characterattack = false;
-	bool sc[10] = { false, };
-	int sc_num = 0;
+	
 	chrono::system_clock::time_point attack_start_time;
 	chrono::system_clock::time_point move_start_time;
 	chrono::system_clock::time_point information_start_time[6];
@@ -124,27 +110,27 @@ public:
 		//monsterhpBox.setOutlineThickness(3.0f);
 		//monsterhpBox.setOutlineColor(sf::Color::Green);
 
-		hpBox.setSize(sf::Vector2f(300, 30));
-		hpBox.setFillColor(sf::Color(255, 255, 255));
-		hpBox.setPosition(sf::Vector2f(1050, 400));
-		hpBox.setOutlineThickness(3.0f);
+		hpBox.setSize(sf::Vector2f(BOX));
+		hpBox.setFillColor(sf::Color(WHITE));
+		hpBox.setPosition(sf::Vector2f(INFORMATION_X, 400));
+		hpBox.setOutlineThickness(OUTLINETHICK);
 		hpBox.setOutlineColor(sf::Color::Green);
 		//hpBox.setScale(1, 1);
-
+		
 		g_window->draw(hpBox);
 
-		mpBox.setSize(sf::Vector2f(300, 30));
-		mpBox.setFillColor(sf::Color(255, 255, 255));
-		mpBox.setPosition(sf::Vector2f(1050, 500));
-		mpBox.setOutlineThickness(3.0f);
+		mpBox.setSize(sf::Vector2f(BOX));
+		mpBox.setFillColor(sf::Color(WHITE));
+		mpBox.setPosition(sf::Vector2f(INFORMATION_X, 500));
+		mpBox.setOutlineThickness(OUTLINETHICK);
 		mpBox.setOutlineColor(sf::Color::Green);
 		//hpBox.setScale(1, 1);
 		g_window->draw(mpBox);
 
-		expBox.setSize(sf::Vector2f(300, 30));
-		expBox.setFillColor(sf::Color(255, 255, 255));
-		expBox.setPosition(sf::Vector2f(1050, 600));
-		expBox.setOutlineThickness(3.0f);
+		expBox.setSize(sf::Vector2f(BOX));
+		expBox.setFillColor(sf::Color(WHITE));
+		expBox.setPosition(sf::Vector2f(INFORMATION_X, 600));
+		expBox.setOutlineThickness(OUTLINETHICK);
 		expBox.setOutlineColor(sf::Color::Green);
 		//hpBox.setScale(1, 1);
 		g_window->draw(expBox);
@@ -349,14 +335,14 @@ public:
 	}
 };
 
-OBJECT avatar;
 OBJECT attack;
-unordered_map <int, OBJECT> players;
-
 OBJECT plat_tile;
-OBJECT obstacle_tile;
+//OBJECT obstacle_tile;
 OBJECT Btown_tile;
 OBJECT Gtown_tile;
+OBJECT avatar;
+
+unordered_map <int, OBJECT> players;
 
 sf::Texture* board;
 sf::Texture* monster;
@@ -379,6 +365,7 @@ void client_initialize()
 		cout << "Font Loading Error!\n";
 		//exit(-1);
 	}
+	
 	attack = OBJECT(*player_attack, 0, 0, 65, 65);
 	plat_tile = OBJECT{ *board, 130, 0, TILE_WIDTH, TILE_WIDTH };
 	obstacle_tile = OBJECT{ *board, 195, 0, TILE_WIDTH, TILE_WIDTH };
@@ -672,9 +659,8 @@ void client_main()
 
 	hpBoxInner.setSize(sf::Vector2f(((100.f * avatar._hp / avatar.max_hp) * 3), 30));
 	hpBoxInner.setFillColor(sf::Color(255, 0, 0));
-	//hpBoxInner.setPosition(hpBox.getPosition());
 	hpBoxInner.setPosition(1050, 400);
-	g_window->draw(hpBoxInner);
+	//hpBoxInner.setPosition(hpBox.getPosition());
 
 	mpBoxInner.setSize(sf::Vector2f(((100.f * avatar._mp / avatar.max_mp) * 3), 30));
 	mpBoxInner.setFillColor(sf::Color(0, 0, 255));
@@ -687,6 +673,7 @@ void client_main()
 	//expBoxInner.setPosition(expBox.getPosition());
 
 
+	g_window->draw(hpBoxInner);
 	g_window->draw(mpBoxInner);
 	g_window->draw(expBoxInner);
 
@@ -701,6 +688,9 @@ void send_packet(void* packet)
 
 int main()
 {
+	MapData* mapData = MapData::GetInstance();
+	SFSystem* sfml = SFSystem::GetInstance();
+	
 	string userid;
 	cout << " User ID를 입력하시오 : ";
 	cin >> userid;
@@ -714,7 +704,6 @@ int main()
 		//exit(-1);
 	}
 
-	MapData* mapData = MapData::GetInstance();
 	
 	client_initialize();
 	CS_LOGIN_PACKET p;
@@ -722,14 +711,11 @@ int main()
 	p.type = CS_LOGIN;
 	strcpy_s(p.name, userid.c_str());
 
-	//string player_name{ "P" };
-	//player_name += to_string(GetCurrentProcessId());
-	//strcpy_s(p.name, player_name.c_str());
 	send_packet(&p);
 	avatar.set_name(p.name);
 
 	sf::RenderWindow window(sf::VideoMode(1365, WINDOW_HEIGHT), "2D CLIENT");
-	g_window = &window;
+	SFSYSTEM->window = &window;
 
 	while (window.isOpen())
 	{

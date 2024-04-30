@@ -24,19 +24,6 @@ constexpr char SC_LOGIN_OK = 7; // 성공
 constexpr char SC_LOGIN_FAIL = 8; // 실패
 constexpr char SC_STAT_CHANGE = 9; // 레벨이 오르거나 HP가 깎일때를위해서
 
-//enum MAP_TYPE
-//{
-//	e_PLAT,
-//	e_OBSTACLE,
-//	e_BTOWN,
-//	e_GTOWN
-//};
-//
-//struct MAP
-//{
-//	MAP_TYPE type; // 평지랑 장애물 구분하기 위함.
-//};
-
 #pragma pack (push, 1)
 struct CS_LOGIN_PACKET {
 	unsigned char size;

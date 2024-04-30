@@ -273,6 +273,18 @@
     <ClInclude Include="MapData.h">
       <Filter>GameContents</Filter>
     </ClInclude>
+    <ClInclude Include="SFSystem.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Moster.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -282,6 +294,18 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="MapData.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="SFSystem.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="Moster.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
   </ItemGroup>
