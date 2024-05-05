@@ -16,9 +16,33 @@ constexpr uint16 TOWN_SIZE = 20;
 constexpr uint16 W_WIDTH = 2000;
 constexpr uint16 W_HEIGHT = 2000;
 
-uint16	g_left_x;
-uint16	g_top_y;
-uint16	g_myid;
+extern uint16	g_left_x;
+extern uint16	g_top_y;
+extern uint16	g_myid;
+
+struct STAT
+{
+	int16	level;
+	int16	hp;
+	int16	mp;
+	int16	exp;
+	int16	maxHp;
+	int16	maxMp;
+	int16	maxExp;
+};
+
+struct POS
+{
+	int16	posx;
+	int16	posy;
+};
+
+struct TP
+{
+	chrono::system_clock::time_point	attackTime;
+	chrono::system_clock::time_point	attackEndTime;
+	chrono::system_clock::time_point	moveTime;
+};
 
 enum SystemText
 {
@@ -30,6 +54,7 @@ enum SystemText
 	MAXEXP,
 	LEVEL,
 	NAME,
+	PLAYERPOS,
 	CHAT
 };
 
@@ -42,8 +67,10 @@ enum SystemBox
 	MPINNERBOX,
 	EXPINNERBOX
 };
+
 #define	MAPDATA				MapData::GetInstance()
 #define	SFSYSTEM			SFSystem::GetInstance()
+#define OBJECT				Object::GetInstance()
 
 #define	BOX					300, 30
 

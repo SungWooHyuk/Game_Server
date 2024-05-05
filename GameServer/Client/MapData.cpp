@@ -25,7 +25,7 @@ MapData* MapData::GetInstance()
 void MapData::InitMapSetting(const char* _worldMapFilename)
 {
 	char data;
-	FILE* fp = fopen("", "rb");
+	FILE* fp = fopen(_worldMapFilename, "rb");
 	ASSERT_CRASH(fp != nullptr);
 
 	int cnt = 0;

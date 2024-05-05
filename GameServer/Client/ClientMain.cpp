@@ -2,6 +2,9 @@
 #include "utils.h"
 #include "MapData.h"
 #include "SFSystem.h"
+#include "Object.h"
+#include "Client.h"
+#include "Player.h"
 
 #include "protocol.h"
 
@@ -9,383 +12,48 @@ sf::TcpSocket s_socket;
 sf::RenderWindow* g_window;
 sf::Font g_font;
 
-//int g_left_x;
-//int g_top_y;
-//int g_myid;
+unordered_map <int, Client> players;
+Player avatar;
 
-class OBJECT {
-private:
-	bool m_showing;
-	sf::Sprite m_sprite;
-	sf::Sprite m_sprite_attack;
+uint16	g_left_x;
+uint16	g_top_y;
+uint16	g_myid;
 
-	sf::Text m_information[10];
-	sf::Text m_name;
-	sf::Text m_level;
-	sf::Text m_exp;
-	sf::Text m_maxexp;
-	sf::Text m_chat;
-	sf::Text m_hp;
-	sf::Text m_mp;
-	sf::Text m_maxhp;
-	sf::Text m_maxmp;
-
-	sf::RectangleShape hpBox;
-	sf::RectangleShape mpBox;
-	sf::RectangleShape expBox;
-	sf::RectangleShape hpBoxInner;
-	sf::RectangleShape mpBoxInner;
-	sf::RectangleShape expBoxInner;
-
-	chrono::system_clock::time_point m_mess_end_time;
-	chrono::system_clock::time_point m_information_end_time[10];
-	chrono::system_clock::time_point m_attack_end_time;
-public:
-	//int id;
-	int m_x, m_y;
-	int _hp;
-	int _mp;
-	int _exp;
-	int max_hp;
-	int max_mp;
-	int max_exp;
-	int _level;
-
-	char name[NAME_SIZE];
-	
-	chrono::system_clock::time_point attack_start_time;
-	chrono::system_clock::time_point move_start_time;
-	chrono::system_clock::time_point information_start_time[6];
-	OBJECT(sf::Texture& t, int x, int y, int x2, int y2) {
-		m_showing = false;
-		m_sprite.setTexture(t);
-		m_sprite.setTextureRect(sf::IntRect(x, y, x2, y2));
-		set_name("NONAME");
-		m_mess_end_time = chrono::system_clock::now();
-	}
-
-	OBJECT() {
-		m_showing = false;
-	}
-	void show()
-	{
-		m_showing = true;
-	}
-	void hide()
-	{
-		m_showing = false;
-	}
-
-	void a_move(int x, int y) {
-		m_sprite.setPosition((float)x, (float)y);
-	}
-
-	void a_draw() {
-		g_window->draw(m_sprite);
-	}
-
-	void move(int x, int y) {
-		m_x = x;
-		m_y = y;
-	}
-
-	void CharacterAttack(sf::Texture& t, int x, int y, int x2, int y2)
-	{
-		m_sprite_attack.setTexture(t);
-		m_sprite_attack.setTextureRect(sf::IntRect(x, y, x2, y2));
-	}
-	void attacktime()
-	{
-		m_attack_end_time = chrono::system_clock::now() + chrono::milliseconds(500);
-	}
-	void draw() {
-		if (false == m_showing) return;
-
-		float rx = (m_x - g_left_x) * 65.0f + 1;
-		float ry = (m_y - g_top_y) * 65.0f + 1;
-		m_sprite.setPosition(rx, ry);
-		g_window->draw(m_sprite);
-		auto size = m_name.getGlobalBounds();
-
-		//monsterhpBox.setOutlineThickness(3.0f);
-		//monsterhpBox.setOutlineColor(sf::Color::Green);
-
-		hpBox.setSize(sf::Vector2f(BOX));
-		hpBox.setFillColor(sf::Color(WHITE));
-		hpBox.setPosition(sf::Vector2f(INFORMATION_X, 400));
-		hpBox.setOutlineThickness(OUTLINETHICK);
-		hpBox.setOutlineColor(sf::Color::Green);
-		//hpBox.setScale(1, 1);
-		
-		g_window->draw(hpBox);
-
-		mpBox.setSize(sf::Vector2f(BOX));
-		mpBox.setFillColor(sf::Color(WHITE));
-		mpBox.setPosition(sf::Vector2f(INFORMATION_X, 500));
-		mpBox.setOutlineThickness(OUTLINETHICK);
-		mpBox.setOutlineColor(sf::Color::Green);
-		//hpBox.setScale(1, 1);
-		g_window->draw(mpBox);
-
-		expBox.setSize(sf::Vector2f(BOX));
-		expBox.setFillColor(sf::Color(WHITE));
-		expBox.setPosition(sf::Vector2f(INFORMATION_X, 600));
-		expBox.setOutlineThickness(OUTLINETHICK);
-		expBox.setOutlineColor(sf::Color::Green);
-		//hpBox.setScale(1, 1);
-		g_window->draw(expBox);
-
-		if (m_mess_end_time < chrono::system_clock::now()) {
-			m_name.setPosition(rx + 32 - size.width / 2, ry - 10);
-			g_window->draw(m_name);
-		}
-		else {
-			m_chat.setPosition(rx + 32 - size.width / 2, ry - 10);
-			g_window->draw(m_chat);
-		}
-
-		m_level.setPosition(1050, 350);
-		g_window->draw(m_level);
-
-		m_hp.setPosition(1050, 450);
-		g_window->draw(m_hp);
-
-		m_maxhp.setPosition(1200, 450);
-		g_window->draw(m_maxhp);
-
-		m_mp.setPosition(1050, 550);
-		g_window->draw(m_mp);
-
-		m_maxmp.setPosition(1200, 550);
-		g_window->draw(m_maxmp);
-
-		m_exp.setPosition(1050, 650);
-		g_window->draw(m_exp);
-
-		m_maxexp.setPosition(1200, 650);
-		g_window->draw(m_maxexp);
-
-		for (int i = 0; i < 10; ++i)
-		{
-			if (m_information_end_time[i] > chrono::system_clock::now())
-			{
-				m_information[i].setPosition(1040, 35 * i);
-				g_window->draw(m_information[i]);
-			}
-		}
-
-		if (m_attack_end_time > chrono::system_clock::now())
-		{
-			m_sprite_attack.setPosition(rx, ry - 65);
-			g_window->draw(m_sprite_attack);
-
-			m_sprite_attack.setPosition(rx, ry + 65);
-			g_window->draw(m_sprite_attack);
-
-			m_sprite_attack.setPosition(rx + 65, ry);
-			g_window->draw(m_sprite_attack);
-
-			m_sprite_attack.setPosition(rx - 65, ry);
-			g_window->draw(m_sprite_attack);
-
-		}
-
-	}
-	void set_name(const char str[]) {
-		m_name.setFont(g_font);
-		m_name.setString(str);
-		m_name.setStyle(sf::Text::Bold);
-		if (id < MAX_USER) m_name.setFillColor(sf::Color(255, 255, 255));
-		else if (id > MAX_USER && id < MAX_NPC / 4)
-		{
-			m_name.setFillColor(sf::Color(255, 0, 255));
-		}
-		else if (id >= MAX_NPC / 4 && id < (MAX_NPC / 4 * 2))
-		{
-			m_name.setFillColor(sf::Color(255, 255, 0));
-		}
-		else if (id >= (MAX_NPC / 4 * 2) && id < (MAX_NPC / 4 * 3))
-		{
-			m_name.setFillColor(sf::Color(255, 255, 255));
-		}
-		else
-		{
-			m_name.setFillColor(sf::Color(0, 255, 0));
-		}
-	}
-
-
-	void set_chat(const char str[]) {
-		m_chat.setFont(g_font);
-		m_chat.setString(str);
-		m_chat.setFillColor(sf::Color(255, 255, 255));
-		m_chat.setStyle(sf::Text::Bold);
-		m_mess_end_time = chrono::system_clock::now() + chrono::seconds(3);
-	}
-
-	void set_level(const char str[])
-	{
-		m_level.setFont(g_font);
-		m_level.setString(str);
-		m_level.setFillColor(sf::Color(255, 255, 255));
-		m_level.setStyle(sf::Text::Bold);
-	}
-
-	void set_hp(const char str[])
-	{
-		m_hp.setFont(g_font);
-		m_hp.setString(str);
-		m_hp.setFillColor(sf::Color(255, 255, 255));
-		m_hp.setStyle(sf::Text::Bold);
-	}
-
-	void set_maxhp(const char str[])
-	{
-		m_maxhp.setFont(g_font);
-		m_maxhp.setString(str);
-		m_maxhp.setFillColor(sf::Color(255, 255, 255));
-		m_maxhp.setStyle(sf::Text::Bold);
-	}
-
-
-	void set_mp(const char str[])
-	{
-		m_mp.setFont(g_font);
-		m_mp.setString(str);
-		m_mp.setFillColor(sf::Color(255, 255, 255));
-		m_mp.setStyle(sf::Text::Bold);
-	}
-
-	void set_maxmp(const char str[])
-	{
-		m_maxmp.setFont(g_font);
-		m_maxmp.setString(str);
-		m_maxmp.setFillColor(sf::Color(255, 255, 255));
-		m_maxmp.setStyle(sf::Text::Bold);
-	}
-
-	// char buff[256];
-	// int x = 10;
-	// sprintf(buff, "%d", x);
-	void set_exp(const char str[])
-	{
-		m_exp.setFont(g_font);
-		m_exp.setString(str);
-		m_exp.setFillColor(sf::Color(255, 255, 255));
-		m_exp.setStyle(sf::Text::Bold);
-	}
-
-	void set_maxexp(const char str[])
-	{
-		m_maxexp.setFont(g_font);
-		m_maxexp.setString(str);
-		m_maxexp.setFillColor(sf::Color(255, 255, 255));
-		m_maxexp.setStyle(sf::Text::Bold);
-	}
-
-	void system_chat(const char str[])
-	{
-
-		for (int i = 0; i < 10; ++i)
-		{
-			m_information[i].setFont(g_font);
-			m_information[i].setFillColor(sf::Color(255, 255, 255));
-			m_information[i].setStyle(sf::Text::Bold);
-			m_information[i].setScale(sf::Vector2f(0.5f, 0.5f));
-		}
-
-		/*for (int i = 9; i > 0; --i)
-		{
-			if (m_information[i].getString() != "NULL")
-			{
-				m_information[i + 1].setString(m_information[i].getString());
-				m_information_end_time[i+1] = m_information_end_time[i];
-			}
-			else if (i == 0)
-			{
-				m_information[i].setString(str);
-				m_information_end_time[0] = chrono::system_clock::now() + chrono::seconds(5);
-			}
-			else
-				continue;
-		}*/
-		m_information[9].setString(m_information[8].getString());
-		m_information[8].setString(m_information[7].getString());
-		m_information[7].setString(m_information[6].getString());
-		m_information[6].setString(m_information[5].getString());
-		m_information[5].setString(m_information[4].getString());
-		m_information[4].setString(m_information[3].getString());
-		m_information[3].setString(m_information[2].getString());
-		m_information[2].setString(m_information[1].getString());
-		m_information[1].setString(m_information[0].getString());
-		m_information[0].setString(str);
-
-		m_information_end_time[9] = m_information_end_time[8];
-		m_information_end_time[8] = m_information_end_time[7];
-		m_information_end_time[7] = m_information_end_time[6];
-		m_information_end_time[6] = m_information_end_time[5];
-		m_information_end_time[5] = m_information_end_time[4];
-		m_information_end_time[4] = m_information_end_time[3];
-		m_information_end_time[3] = m_information_end_time[2];
-		m_information_end_time[2] = m_information_end_time[1];
-		m_information_end_time[1] = m_information_end_time[0];
-		m_information_end_time[0] = chrono::system_clock::now() + chrono::seconds(5);
-
-
-	}
-};
-
-OBJECT attack;
-OBJECT plat_tile;
-//OBJECT obstacle_tile;
-OBJECT Btown_tile;
-OBJECT Gtown_tile;
-OBJECT avatar;
-
-unordered_map <int, OBJECT> players;
-
-sf::Texture* board;
-sf::Texture* monster;
-sf::Texture* player;
-sf::Texture* player_attack;
-
-void client_initialize()
-{
-	board = new sf::Texture;
-	player = new sf::Texture;
-	monster = new sf::Texture;
-	player_attack = new sf::Texture;
-
-	board->loadFromFile("./Image/maps.bmp");
-	player->loadFromFile("./Image/Player.png");
-	monster->loadFromFile("./Image/Monster.png");
-	player_attack->loadFromFile("./Image/player_Attack1.png");
-
-	if (false == g_font.loadFromFile("cour.ttf")) {
-		cout << "Font Loading Error!\n";
-		//exit(-1);
-	}
-	
-	attack = OBJECT(*player_attack, 0, 0, 65, 65);
-	plat_tile = OBJECT{ *board, 130, 0, TILE_WIDTH, TILE_WIDTH };
-	obstacle_tile = OBJECT{ *board, 195, 0, TILE_WIDTH, TILE_WIDTH };
-	Btown_tile = OBJECT{ *board, 65, 0, TILE_WIDTH, TILE_WIDTH };
-	Gtown_tile = OBJECT{ *board, 0, 0, TILE_WIDTH, TILE_WIDTH };
-
-	avatar = OBJECT(*player, 0, 0, 65, 65);
-	avatar.CharacterAttack(*player_attack, 0, 0, 65, 65);
-
-	avatar.move(4, 4);
-}
-
-void client_finish()
-{
-	players.clear();
-	delete board;
-	delete player;
-	delete monster;
-	delete player_attack;
-}
+//class OBJECT {
+//private:
+//	
+//	sf::Text m_information[10];
+//	sf::Text m_name;
+//	sf::Text m_chat;
+//
+//	chrono::system_clock::time_point m_mess_end_time;
+//public:
+//
+//	char name[NAME_SIZE];
+//
+//	void set_name(const char str[]) {
+//		m_name.setFont(g_font);
+//		m_name.setString(str);
+//		m_name.setStyle(sf::Text::Bold);
+//		if (id < MAX_USER) m_name.setFillColor(sf::Color(255, 255, 255));
+//		else if (id > MAX_USER && id < MAX_NPC / 4)
+//		{
+//			m_name.setFillColor(sf::Color(255, 0, 255));
+//		}
+//		else if (id >= MAX_NPC / 4 && id < (MAX_NPC / 4 * 2))
+//		{
+//			m_name.setFillColor(sf::Color(255, 255, 0));
+//		}
+//		else if (id >= (MAX_NPC / 4 * 2) && id < (MAX_NPC / 4 * 3))
+//		{
+//			m_name.setFillColor(sf::Color(255, 255, 255));
+//		}
+//		else
+//		{
+//			m_name.setFillColor(sf::Color(0, 255, 0));
+//		}
+//	}
+//};
 
 void ProcessPacket(char* ptr)
 {
@@ -395,23 +63,30 @@ void ProcessPacket(char* ptr)
 	case SC_LOGIN_OK:
 	{
 		SC_LOGIN_OK_PACKET* packet = reinterpret_cast<SC_LOGIN_OK_PACKET*>(ptr);
-		g_myid = packet->id;
-		avatar.id = g_myid;
-		avatar.m_x = packet->x;
-		avatar.m_y = packet->y;
-		avatar._exp = packet->exp;
-		avatar._hp = packet->hp;
-		avatar._mp = packet->mp;
-		avatar.max_exp = packet->max_exp;
-		avatar.max_hp = packet->max_hp;
-		avatar.max_mp = packet->max_mp;
-		avatar._level = packet->level;
 
-		avatar.move(packet->x, packet->y);
+		STAT st;
+		POS ps;
+		TP tp;
+
+		st.exp = packet->exp;
+		st.hp = packet->hp;
+		st.level = packet->level;
+		st.maxExp = packet->max_exp;
+		st.maxHp = packet->max_hp;
+		st.maxMp = packet->max_mp;
+		st.mp = packet->mp;
+		ps.posx = packet->x;
+		ps.posy = packet->y;
+		tp.attackEndTime = chrono::system_clock::now();
+		tp.attackTime = chrono::system_clock::now();
+		tp.moveTime = chrono::system_clock::now();
+
+		Player avatar(*SFSYSTEM->player_attack, *SFSYSTEM->player, 0, 0, 65, 65, st, ps, tp, packet->id, packet->name);
+
+		
 		g_left_x = packet->x - SCREEN_WIDTH / 2;
 		g_top_y = packet->y - SCREEN_HEIGHT / 2;
 
-		avatar.show();
 		break;
 	}
 	case SC_LOGIN_FAIL:
@@ -424,52 +99,27 @@ void ProcessPacket(char* ptr)
 		SC_ADD_OBJECT_PACKET* my_packet = reinterpret_cast<SC_ADD_OBJECT_PACKET*>(ptr);
 		int id = my_packet->id;
 
+		POS ps;
+		ps.posx = my_packet->x;
+		ps.posy = my_packet->y;
+
 		if (id == g_myid) {
-			avatar.move(my_packet->x, my_packet->y);
+			avatar.Move(my_packet->x, my_packet->y);
 			g_left_x = my_packet->x - SCREEN_WIDTH / 2;
 			g_top_y = my_packet->y - SCREEN_HEIGHT / 2;
-
-			avatar.show();
 		}
 		else if (id < MAX_USER) {
-			players[id] = OBJECT{ *player, 0, 0, 65, 65 };
-			players[id].id = id;
-			players[id].move(my_packet->x, my_packet->y);
-			players[id].set_name(my_packet->name);
-			players[id].show();
+			players[id] = Client{ *SFSYSTEM->player, ps, 0, 0, 65, 65, id, my_packet->name};
 		}
 		else {
-			if (id > MAX_USER && id < MAX_NPC / 4) {
-				players[id] = OBJECT{ *monster, 0, 0, 65, 65 };
-				players[id].id = id;
-				players[id].move(my_packet->x, my_packet->y);
-				players[id].set_name("LV1");
-				players[id].show();
-			}
+			if (id > MAX_USER && id < MAX_NPC / 4) 
+				players[id] = Client{ *SFSYSTEM->monster, ps, 0, 0, 65, 65, id, "LV_1"};
 			else if (id >= MAX_NPC / 4 && id < (MAX_NPC / 4 * 2))
-			{
-				players[id] = OBJECT{ *monster, 455, 0, 65, 65 };
-				players[id].id = id;
-				players[id].move(my_packet->x, my_packet->y);
-				players[id].set_name("LV2");
-				players[id].show();
-			}
+				players[id] = Client{ *SFSYSTEM->monster, ps, 0, 0, 65, 65, id, "LV_2" };
 			else if (id >= (MAX_NPC / 4 * 2) && id < (MAX_NPC / 4 * 3))
-			{
-				players[id] = OBJECT{ *monster, 0, 260, 65, 65 };
-				players[id].id = id;
-				players[id].move(my_packet->x, my_packet->y);
-				players[id].set_name("LV3");
-				players[id].show();
-			}
+				players[id] = Client{ *SFSYSTEM->monster, ps, 0, 0, 65, 65, id, "LV_3" };
 			else
-			{
-				players[id] = OBJECT{ *monster, 260, 260, 65, 65 };
-				players[id].id = id;
-				players[id].move(my_packet->x, my_packet->y);
-				players[id].set_name("LV4");
-				players[id].show();
-			}
+				players[id] = Client{ *SFSYSTEM->monster, ps, 0, 0, 65, 65, id, "LV_4" };
 		}
 		break;
 	}
@@ -478,12 +128,12 @@ void ProcessPacket(char* ptr)
 		SC_MOVE_OBJECT_PACKET* my_packet = reinterpret_cast<SC_MOVE_OBJECT_PACKET*>(ptr);
 		int other_id = my_packet->id;
 		if (other_id == g_myid) {
-			avatar.move(my_packet->x, my_packet->y);
+			avatar.Move(my_packet->x, my_packet->y);
 			g_left_x = my_packet->x - SCREEN_WIDTH / 2;
 			g_top_y = my_packet->y - SCREEN_HEIGHT / 2;
 		}
 		else {
-			players[other_id].move(my_packet->x, my_packet->y);
+			players[other_id].Move(my_packet->x, my_packet->y);
 		}
 		break;
 	}
@@ -493,7 +143,6 @@ void ProcessPacket(char* ptr)
 		SC_REMOVE_OBJECT_PACKET* my_packet = reinterpret_cast<SC_REMOVE_OBJECT_PACKET*>(ptr);
 		int other_id = my_packet->id;
 		if (other_id == g_myid) {
-			avatar.hide();
 		}
 		else {
 			players.erase(other_id);
@@ -505,7 +154,7 @@ void ProcessPacket(char* ptr)
 		SC_CHAT_PACKET* my_packet = reinterpret_cast<SC_CHAT_PACKET*>(ptr);
 		int other_id = my_packet->id;
 
-		avatar.system_chat(my_packet->mess);
+		SFSYSTEM->SetChat(my_packet->mess);
 
 		break;
 	}
@@ -514,18 +163,19 @@ void ProcessPacket(char* ptr)
 		SC_STAT_CHANGEL_PACKET* pc = reinterpret_cast<SC_STAT_CHANGEL_PACKET*>(ptr);
 		int other_id = pc->id;
 
+		STAT st;
+		st.hp = pc->hp;
+		st.maxHp = pc->max_hp;
+		st.mp = pc->mp;
+		st.maxMp = pc->max_mp;
+		st.exp = pc->exp;
+		st.maxExp = pc->max_exp;
+		st.level = pc->level;
+
 		if (other_id == g_myid) {
-			avatar._hp = pc->hp;
-			avatar.max_hp = pc->max_hp;
-			avatar._mp = pc->mp;
-			avatar.max_mp = pc->max_mp;
-			avatar._exp = pc->exp;
-			avatar.max_exp = pc->max_exp;
-			avatar._level = pc->level;
+			avatar.SetStat(st);
 		}
-		else
-		{
-		}
+		
 		break;
 	}
 
@@ -577,105 +227,63 @@ void client_main()
 	if (recv_result != sf::Socket::NotReady)
 		if (received > 0) process_data(net_buf, received);
 
-	for (int i = 0; i < SCREEN_WIDTH; ++i)
-		for (int j = 0; j < SCREEN_HEIGHT; ++j)
-		{
-			int tile_x = i + g_left_x;
-			int tile_y = j + g_top_y;
-			if ((tile_x < 0) || (tile_y < 0)) continue;
-			
-			if (MAPDATA->GetTile(tile_y,tile_x) == MAPDATA->MAP_TYPE::e_PLAT) {
-				plat_tile.a_move(TILE_WIDTH * i, TILE_WIDTH * j);
-				plat_tile.a_draw();
-			}
-			else if (MAPDATA->GetTile(tile_y, tile_x) == MAPDATA->MAP_TYPE::e_OBSTACLE)
-			{
-				obstacle_tile.a_move(TILE_WIDTH * i, TILE_WIDTH * j);
-				obstacle_tile.a_draw();
-			}
-			else if (MAPDATA->GetTile(tile_y, tile_x) == MAPDATA->MAP_TYPE::e_BTOWN)
-			{
-				Btown_tile.a_move(TILE_WIDTH * i, TILE_WIDTH * j);
-				Btown_tile.a_draw();
-			}
-			else if (MAPDATA->GetTile(tile_y, tile_x) == MAPDATA->MAP_TYPE::e_GTOWN)
-			{
-				Gtown_tile.a_move(TILE_WIDTH * i, TILE_WIDTH * j);
-				Gtown_tile.a_draw();
-			}
-		}
-	avatar.draw();
-	for (auto& pl : players) pl.second.draw();
-	sf::Text text;
-	text.setFont(g_font);
-	text.setFillColor(sf::Color(255, 255, 255));
-	text.setStyle(sf::Text::Bold);
+	
+	//for (auto& pl : players) pl.second.Draw();
+	
 	char buf[100];
-	sprintf_s(buf, "(%d, %d)", avatar.m_x, avatar.m_y);
-	text.setString(buf);
-	g_window->draw(text);
+	sprintf_s(buf, "(%d, %d)", avatar.GetPos().posx, avatar.GetPos().posy);
 
-	string hp = to_string(avatar._hp);
+	SFSYSTEM->SetText(SystemText::PLAYERPOS, buf);
+	SFSYSTEM->SetInnerBoxSize(SystemBox::HPINNERBOX, avatar.GetStat().hp, avatar.GetStat().maxHp);
+	SFSYSTEM->SetInnerBoxSize(SystemBox::MPINNERBOX, avatar.GetStat().mp, avatar.GetStat().maxMp);
+	SFSYSTEM->SetInnerBoxSize(SystemBox::EXPINNERBOX, avatar.GetStat().exp, avatar.GetStat().maxExp);
+
+	string hp = to_string(avatar.GetStat().hp);
 	string _hp = "HP : ";
 	_hp += hp;
-	avatar.set_hp(_hp.c_str());
 
-	string maxhp = to_string(avatar.max_hp);
+	SFSYSTEM->SetText(SystemText::HP, _hp.c_str());
+
+	string maxhp = to_string(avatar.GetStat().maxHp);
 	string _maxhp = " / ";
 	_maxhp += maxhp;
-	avatar.set_maxhp(_maxhp.c_str());
+	
+	SFSYSTEM->SetText(SystemText::MAXHP, _maxhp.c_str());
 
-	string mp = to_string(avatar._mp);
+	string mp = to_string(avatar.GetStat().mp);
 	string _mp = "MP : ";
 	_mp += mp;
-	avatar.set_mp(_mp.c_str());
+	SFSYSTEM->SetText(SystemText::MP, _mp.c_str());
 
-	string maxmp = to_string(avatar.max_mp);
+	string maxmp = to_string(avatar.GetStat().maxMp);
 	string _maxmp = " / ";
 	_maxmp += maxmp;
-	avatar.set_maxmp(_maxmp.c_str());
+	SFSYSTEM->SetText(SystemText::MAXMP, _maxmp.c_str());
 
-	string lv = to_string(avatar._level);
-	string a = "LV : ";
-	a += lv;
-	avatar.set_level(a.c_str());
+	string lv = to_string(avatar.GetStat().level);
+	string _lv = "LV : ";
+	_lv += lv;
+	SFSYSTEM->SetText(SystemText::LEVEL, _lv.c_str());
 
-	string maxexp = to_string(avatar.max_exp);
-	string _maxexp = " / ";
-	_maxexp += maxexp;
-	avatar.set_maxexp(_maxexp.c_str());
-
-	string exp = to_string(avatar._exp);
+	string exp = to_string(avatar.GetStat().exp);
 	string _exp = "EXP : ";
 	_exp += exp;
-	avatar.set_exp(_exp.c_str());
-	//avatar.set_exp(teemp);
-	//avatar.set_maxexp("300");
+	SFSYSTEM->SetText(SystemText::EXP, exp.c_str());
 
-	sf::RectangleShape hpBoxInner;
-	sf::RectangleShape mpBoxInner;
-	sf::RectangleShape expBoxInner;
+	string maxexp = to_string(avatar.GetStat().maxExp);
+	string _maxexp = " / ";
+	_maxexp += maxexp;
+	SFSYSTEM->SetText(SystemText::MAXEXP, maxexp.c_str());
 
+	
+	SFSYSTEM->Draw(); 
+	OBJECT->TileDraw();
 
-	hpBoxInner.setSize(sf::Vector2f(((100.f * avatar._hp / avatar.max_hp) * 3), 30));
-	hpBoxInner.setFillColor(sf::Color(255, 0, 0));
-	hpBoxInner.setPosition(1050, 400);
-	//hpBoxInner.setPosition(hpBox.getPosition());
-
-	mpBoxInner.setSize(sf::Vector2f(((100.f * avatar._mp / avatar.max_mp) * 3), 30));
-	mpBoxInner.setFillColor(sf::Color(0, 0, 255));
-	mpBoxInner.setPosition(1050, 500);
-	//mpBoxInner.setPosition(mpBox.getPosition());
-
-	expBoxInner.setSize(sf::Vector2f(((100.f * avatar._exp / avatar.max_exp) * 3), 30));
-	expBoxInner.setFillColor(sf::Color(255, 0, 255));
-	expBoxInner.setPosition(1050, 600);
-	//expBoxInner.setPosition(expBox.getPosition());
-
-
-	g_window->draw(hpBoxInner);
-	g_window->draw(mpBoxInner);
-	g_window->draw(expBoxInner);
+	avatar.Draw();
+	for (auto& a : players)
+	{
+		a.second.Draw();
+	}
 
 }
 
@@ -686,10 +294,14 @@ void send_packet(void* packet)
 	s_socket.send(packet, p[0], sent);
 }
 
+
+
+
 int main()
 {
 	MapData* mapData = MapData::GetInstance();
 	SFSystem* sfml = SFSystem::GetInstance();
+	Object* object = Object::GetInstance();
 	
 	string userid;
 	cout << " User ID를 입력하시오 : ";
@@ -704,16 +316,13 @@ int main()
 		//exit(-1);
 	}
 
-	
-	client_initialize();
 	CS_LOGIN_PACKET p;
 	p.size = sizeof(p);
 	p.type = CS_LOGIN;
 	strcpy_s(p.name, userid.c_str());
 
 	send_packet(&p);
-	avatar.set_name(p.name);
-
+	
 	sf::RenderWindow window(sf::VideoMode(1365, WINDOW_HEIGHT), "2D CLIENT");
 	SFSYSTEM->window = &window;
 
@@ -729,45 +338,44 @@ int main()
 				int direction = -1;
 				switch (event.key.code) {
 				case sf::Keyboard::Left:
-					if (avatar.move_start_time <= chrono::system_clock::now())
+					if (avatar.GetTP().moveTime <= chrono::system_clock::now())
 					{
 						direction = 2;
-						avatar.move_start_time = chrono::system_clock::now() + chrono::milliseconds(500);
+						avatar.GetTP().moveTime = chrono::system_clock::now() + chrono::milliseconds(500);
 					}
 					break;
 				case sf::Keyboard::Right:
-					if (avatar.move_start_time <= chrono::system_clock::now())
+					if (avatar.GetTP().moveTime <= chrono::system_clock::now())
 					{
 						direction = 3;
-						avatar.move_start_time = chrono::system_clock::now() + chrono::milliseconds(500);
+						avatar.GetTP().moveTime = chrono::system_clock::now() + chrono::milliseconds(500);
 					}
 					break;
 				case sf::Keyboard::Up:
-					if (avatar.move_start_time <= chrono::system_clock::now())
+					if (avatar.GetTP().moveTime <= chrono::system_clock::now())
 					{
 						direction = 0;
-						avatar.move_start_time = chrono::system_clock::now() + chrono::milliseconds(500);
+						avatar.GetTP().moveTime = chrono::system_clock::now() + chrono::milliseconds(500);
 					}
 					break;
 				case sf::Keyboard::Down:
-					if (avatar.move_start_time <= chrono::system_clock::now())
+					if (avatar.GetTP().moveTime <= chrono::system_clock::now())
 					{
 						direction = 1;
-						avatar.move_start_time = chrono::system_clock::now() + chrono::milliseconds(500);
+						avatar.GetTP().moveTime = chrono::system_clock::now() + chrono::milliseconds(500);
 					}
 					break;
 				case sf::Keyboard::Escape:
 					window.close();
 					break;
 				case sf::Keyboard::Space:
-					if (avatar.attack_start_time <= chrono::system_clock::now())
+					if (avatar.GetTP().moveTime <= chrono::system_clock::now())
 					{
-						avatar.attacktime();
+						avatar.SetAttackTime();
 						CS_ATTACK_PACKET p;
 						p.size = sizeof(p);
 						p.type = CS_ATTACK;
 						send_packet(&p);
-						avatar.attack_start_time = chrono::system_clock::now() + chrono::seconds(1);
 
 					}
 					break;
@@ -787,7 +395,6 @@ int main()
 		client_main();
 		window.display();
 	}
-	client_finish();
-
+	
 	return 0;
 }

@@ -1,25 +1,33 @@
 #pragma once
+#include "Client.h"
+#include "Utils.h"
+#include "SFSystem.h"
 
-#include "utils.h"
-
-struct Stat
-{
-	int16	hp;
-	int16	mp;
-	int16	exp;
-	int16	maxHp;
-	int16	maxMp;
-	int16	maxExp;
-};
-
-class Player
+class Player : public Client
 {
 private:
 
 public:
+	Player(sf::Texture& _attackT, sf::Texture& _playerT, int _x, int _y, int _x2, int _y2, STAT _st, POS _pos, TP _tp, int16 _id, const char* _name);
+	Player() {};
+	~Player() {};
 
+	TP		GetTP() const { return myTp; };
+	void	SetAttackTime() { 
+		myTp.attackEndTime = chrono::system_clock::now() + chrono::milliseconds(500);
+		myTp.attackTime = chrono::system_clock::now() + chrono::milliseconds(1000);
+	};
+
+	POS		GetPos() const { return myPos; };
+	void	SetStat(STAT _st);
+	STAT	GetStat() const { return myStat; };
+
+	void	Draw();
 private:
-	int16	myId;
-	Stat	myStat;
+	STAT		myStat;
+	TP			myTp;
+private:
+	
+	sf::Sprite	attackSprite;
 };
 

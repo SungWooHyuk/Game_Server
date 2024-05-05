@@ -6,7 +6,17 @@ constexpr int CHAT_SIZE = 100;
 constexpr int MAX_USER = 10000;
 constexpr int MAX_NPC = 100000;
 
+constexpr uint16 SCREEN_WIDTH = 16;
+constexpr uint16 SCREEN_HEIGHT = 16;
 
+constexpr uint16 TILE_WIDTH = 65;
+
+constexpr uint16 WINDOW_WIDTH = SCREEN_WIDTH * TILE_WIDTH;   // size of window
+constexpr uint16 WINDOW_HEIGHT = SCREEN_HEIGHT * TILE_WIDTH;
+
+constexpr uint16 TOWN_SIZE = 20;
+constexpr uint16 W_WIDTH = 2000;
+constexpr uint16 W_HEIGHT = 2000;
 
 // Packet ID
 constexpr char CS_LOGIN = 0;

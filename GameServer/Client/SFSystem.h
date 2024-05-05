@@ -1,6 +1,7 @@
 #pragma once
 
 #include "utils.h"
+#include "queue"
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
@@ -18,11 +19,14 @@ public:
 	void InitBox();
 
 	void SetText(SystemText _st, const char _str[]);
+	void SetChat(const char* _mess);
 	void SetInnerBoxSize(SystemBox _sb, int _inner, int _maxinner);
-
+	void Draw();
+	
 private:
 	vector<sf::Text>			text;
-	Vector<sf::RectangleShape>	box;
+	vector<sf::RectangleShape>	box;
+	vector<sf::Text>			systemChat;
 
 public:
 	sf::TcpSocket				socket;
