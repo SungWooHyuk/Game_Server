@@ -78,6 +78,13 @@ enum SystemBox
 #define	RED					255, 0, 0
 #define	BLUE				0, 0, 255
 #define	MAGENTA				255, 0, 255
+#define YELLOW				255, 255, 0
+#define GREEN				0, 255, 0
+
+#define LV1MONSTER			0, 0, 65, 65
+#define LV2MONSTER			455, 0, 65, 65
+#define LV3MONSTER			0, 260, 65, 65
+#define LV4MONSTER			260, 260, 65, 65
 
 #define	OUTLINETHICK		3.f
 

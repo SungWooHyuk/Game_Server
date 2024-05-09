@@ -428,7 +428,7 @@ void process_packet(int c_id, char* packet)
 		{
 			lock_guard<mutex> ll{ clients[c_id]._s_lock };
 			clients[c_id]._state = ST_INGAME;
-			clients[c_id].send_login_ok_pakcet();
+			clients[c_id].send_login_ok_pakcet(); 
 			string temp = clients[c_id]._name;
 			string ttemp = "";
 

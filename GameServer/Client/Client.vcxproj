@@ -263,8 +263,6 @@
     <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\WindowHandle.hpp" />
     <ClInclude Include="..\ClientS\client_sample\include\SFML\Window\WindowStyle.hpp" />
     <ClInclude Include="MapData.h" />
-    <ClInclude Include="Monster.h" />
-    <ClInclude Include="Moster.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Client.h" />
@@ -276,8 +274,6 @@
   <ItemGroup>
     <ClCompile Include="ClientMain.cpp" />
     <ClCompile Include="MapData.cpp" />
-    <ClCompile Include="Monster.cpp" />
-    <ClCompile Include="Moster.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

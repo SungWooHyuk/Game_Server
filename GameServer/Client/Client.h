@@ -14,11 +14,12 @@ public:
 
 	virtual void	Move(int _x, int _y);
 	virtual void	Draw();
-
+	void			SetNameColor(const char str[]);
 protected:
 	int16		myId;
 	string		myName;
 	POS			myPos;
+	sf::Text	myTextName;
 
 protected:
 	sf::Sprite	Sprite;

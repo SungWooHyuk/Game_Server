@@ -23,6 +23,7 @@ public:
 	void SetInnerBoxSize(SystemBox _sb, int _inner, int _maxinner);
 	void Draw();
 	
+
 private:
 	vector<sf::Text>			text;
 	vector<sf::RectangleShape>	box;

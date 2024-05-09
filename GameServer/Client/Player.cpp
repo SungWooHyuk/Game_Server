@@ -7,6 +7,7 @@ Player::Player(sf::Texture& _attackT, sf::Texture& _playerT, int _x, int _y, int
 {
 	Sprite.setTexture(_playerT);
 	Sprite.setTextureRect(sf::IntRect(_x, _y, _x2, _y2));
+
 	attackSprite.setTexture(_attackT);
 	attackSprite.setTextureRect(sf::IntRect(_x, _y, _x2, _y2));
 

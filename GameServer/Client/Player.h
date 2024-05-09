@@ -6,6 +6,7 @@
 class Player : public Client
 {
 private:
+	using Client::Sprite;
 
 public:
 	Player(sf::Texture& _attackT, sf::Texture& _playerT, int _x, int _y, int _x2, int _y2, STAT _st, POS _pos, TP _tp, int16 _id, const char* _name);

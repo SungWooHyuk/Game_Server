@@ -19,42 +19,6 @@ uint16	g_left_x;
 uint16	g_top_y;
 uint16	g_myid;
 
-//class OBJECT {
-//private:
-//	
-//	sf::Text m_information[10];
-//	sf::Text m_name;
-//	sf::Text m_chat;
-//
-//	chrono::system_clock::time_point m_mess_end_time;
-//public:
-//
-//	char name[NAME_SIZE];
-//
-//	void set_name(const char str[]) {
-//		m_name.setFont(g_font);
-//		m_name.setString(str);
-//		m_name.setStyle(sf::Text::Bold);
-//		if (id < MAX_USER) m_name.setFillColor(sf::Color(255, 255, 255));
-//		else if (id > MAX_USER && id < MAX_NPC / 4)
-//		{
-//			m_name.setFillColor(sf::Color(255, 0, 255));
-//		}
-//		else if (id >= MAX_NPC / 4 && id < (MAX_NPC / 4 * 2))
-//		{
-//			m_name.setFillColor(sf::Color(255, 255, 0));
-//		}
-//		else if (id >= (MAX_NPC / 4 * 2) && id < (MAX_NPC / 4 * 3))
-//		{
-//			m_name.setFillColor(sf::Color(255, 255, 255));
-//		}
-//		else
-//		{
-//			m_name.setFillColor(sf::Color(0, 255, 0));
-//		}
-//	}
-//};
-
 void ProcessPacket(char* ptr)
 {
 	static bool first_time = true;
@@ -67,6 +31,8 @@ void ProcessPacket(char* ptr)
 		STAT st;
 		POS ps;
 		TP tp;
+
+		g_myid = packet->id;
 
 		st.exp = packet->exp;
 		st.hp = packet->hp;
@@ -81,8 +47,7 @@ void ProcessPacket(char* ptr)
 		tp.attackTime = chrono::system_clock::now();
 		tp.moveTime = chrono::system_clock::now();
 
-		Player avatar(*SFSYSTEM->player_attack, *SFSYSTEM->player, 0, 0, 65, 65, st, ps, tp, packet->id, packet->name);
-
+		avatar = Player(*SFSYSTEM->player_attack, *SFSYSTEM->player, 0, 0, 65, 65, st, ps, tp, packet->id, packet->name);
 		
 		g_left_x = packet->x - SCREEN_WIDTH / 2;
 		g_top_y = packet->y - SCREEN_HEIGHT / 2;
@@ -110,16 +75,17 @@ void ProcessPacket(char* ptr)
 		}
 		else if (id < MAX_USER) {
 			players[id] = Client{ *SFSYSTEM->player, ps, 0, 0, 65, 65, id, my_packet->name};
+			cout << "Hi" << endl;
 		}
 		else {
 			if (id > MAX_USER && id < MAX_NPC / 4) 
-				players[id] = Client{ *SFSYSTEM->monster, ps, 0, 0, 65, 65, id, "LV_1"};
+				players[id] = Client{ *SFSYSTEM->monster, ps, LV1MONSTER, id, "LV_1"};
 			else if (id >= MAX_NPC / 4 && id < (MAX_NPC / 4 * 2))
-				players[id] = Client{ *SFSYSTEM->monster, ps, 0, 0, 65, 65, id, "LV_2" };
+				players[id] = Client{ *SFSYSTEM->monster, ps, LV2MONSTER, id, "LV_2" };
 			else if (id >= (MAX_NPC / 4 * 2) && id < (MAX_NPC / 4 * 3))
-				players[id] = Client{ *SFSYSTEM->monster, ps, 0, 0, 65, 65, id, "LV_3" };
+				players[id] = Client{ *SFSYSTEM->monster, ps, LV3MONSTER, id, "LV_3" };
 			else
-				players[id] = Client{ *SFSYSTEM->monster, ps, 0, 0, 65, 65, id, "LV_4" };
+				players[id] = Client{ *SFSYSTEM->monster, ps, LV4MONSTER, id, "LV_4" };
 		}
 		break;
 	}
@@ -268,22 +234,20 @@ void client_main()
 	string exp = to_string(avatar.GetStat().exp);
 	string _exp = "EXP : ";
 	_exp += exp;
-	SFSYSTEM->SetText(SystemText::EXP, exp.c_str());
+	SFSYSTEM->SetText(SystemText::EXP, _exp.c_str());
 
 	string maxexp = to_string(avatar.GetStat().maxExp);
 	string _maxexp = " / ";
 	_maxexp += maxexp;
-	SFSYSTEM->SetText(SystemText::MAXEXP, maxexp.c_str());
+	SFSYSTEM->SetText(SystemText::MAXEXP, _maxexp.c_str());
 
 	
-	SFSYSTEM->Draw(); 
 	OBJECT->TileDraw();
 
 	avatar.Draw();
 	for (auto& a : players)
-	{
 		a.second.Draw();
-	}
+	SFSYSTEM->Draw(); 
 
 }
 

@@ -279,13 +279,7 @@
     <ClInclude Include="Object.h">
       <Filter>GameContents</Filter>
     </ClInclude>
-    <ClInclude Include="Moster.h">
-      <Filter>GameContents</Filter>
-    </ClInclude>
     <ClInclude Include="Client.h">
-      <Filter>GameContents</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
       <Filter>GameContents</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
@@ -308,13 +302,7 @@
     <ClCompile Include="Object.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
-    <ClCompile Include="Moster.cpp">
-      <Filter>GameContents</Filter>
-    </ClCompile>
     <ClCompile Include="Client.cpp">
-      <Filter>GameContents</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
